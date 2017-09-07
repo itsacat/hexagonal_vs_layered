@@ -1,5 +1,9 @@
 // Лучше его назвать ActivatingPayment, или что-то подобное.
 class FirstOrder {
+    // @melfimov Странно что возвращается redirect url как результат операции. Это скорее нужно хранить
+    // во временном поле order, и получать в контроллере, или хранить в БД чтобы можно было позже вернуться
+    // к процессу оплаты если пользователь вдруг окно случайно закрыл
+
     public async makePaymentInAcquiring(
             successRedirectURL, failureRedirectURL
         ) {
@@ -11,6 +15,8 @@ class FirstOrder {
     }
 
 
+    // @melfimov в целом обращение к сервису здесь ok, но, возможно, я бы вынес логику общения с платёжным
+    // шлюзом в объект acquiringOrder
     private async createAcquiringOrder_(successRedirectURL, failureRedirectURL) {
         const acquiringResponse = await SberAcquiringDataService.createOrder({
             orderNumber: this.id,

@@ -8,6 +8,8 @@ class Subscription {
 
         // ОБРАТИТЕВНИВАНИЕ: Похорошему нужно вынести в прикладной уровень, по событию UserSubscribed
         // Но куда?
+        // @melfimov Возможно, вынести в объект FirstPaymentNotification или
+        // вынести проверку уровня нотификаций в Жертвователя
         if (user.isNotificationsLevelIsAll) {
             mail.sendFirstPayment(user.email, {
                 userId: user.id,
@@ -30,6 +32,8 @@ class Subscription {
     }
 
 
+    // @melfimov Странно выглядит чтобы subscription подписывается на события и включает себя.
+    // Скорее это должно быть в user.onFirstOrderPaid => getSubscription().enable
     public enable() {
         if (!this.enabled) {
             this.enabled = true;

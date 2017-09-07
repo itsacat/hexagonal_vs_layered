@@ -11,6 +11,8 @@ class OrderController extends Controller {
             return;
         }
 
+        // @melfimov странный if, это должен быть метод в FirstOrder, который в FirstOrder делает что-то,
+        // а в других подклассах не делает. В клиентском коде нам вообще не должно быть дела до того какой тип у order
         if (order instanceof FirstOrder) {
             try {
                 await(order.readAcquiringOrderData());

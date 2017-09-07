@@ -1,4 +1,5 @@
 class SubscriptionController extends Controller {
+    // @melfimov название метода не отражает что он делает
     public async actionSetAmount(actionContext) {
         const userId = actionContext.request.user.id;
         const projectId = actionContext.data.userFundId;
@@ -46,6 +47,7 @@ class SubscriptionController extends Controller {
             }
         }
 
+        // @melfimov название переменной хорошо бы чтобы указывало что это URL именно внешнего платёжного сайта
         if (urlForFirstPayment) {
             return {
                 formUrl: urlForFirstPayment

@@ -1,3 +1,5 @@
+// @melfimov Странно что это в классе User. Это должен быть либо именно жертвователь, либо код должно быть
+// в subscription или project
 class User {
     // Это можно делать тут или в domain/UserService
     public static async onFirstOrderPaid(order) {
