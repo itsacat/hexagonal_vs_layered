@@ -1,4 +1,5 @@
 class PaymentOfFirstOrder {
+    // @pslotinsky А здесь наоборот :) Раздражает, что метод назван как существительное
     public static async paymentOfFirstOrder(
             subscription, successRedirectURL, failureRedirectURL
         ) {
