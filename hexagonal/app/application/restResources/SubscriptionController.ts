@@ -1,13 +1,13 @@
 class SubscriptionController extends Controller {
-    public async actionSetAmount(actionContext) {
+    public async setAmountAndSubscribeOrRestoreSubscription(actionContext) {
         const userId = actionContext.request.user.id;
         const projectId = actionContext.data.userFundId;
         const amount = actionContext.data.amount;
         const isCordova = !!actionContext.data.app;
         const paymentType = actionContext.data.type;
 
-        const project: Project = await ProjectRepository.getById(projectId);
-        const user: User = await UserRepository.getById(userId);
+
+        SetAmount.setAmount(userId, projectId, amount);
 
 
         const successRedirectURL: string =
@@ -16,22 +16,13 @@ class SubscriptionController extends Controller {
         const failureRedirectURL: string =
             SberVmesteURL.makeFailureRedirectUrl({isCordova, paymentType});
 
-        let subscription: Subscription =
-            await user.getSubscriptionByProject(project);
+        let urlForPaymentInAcquiring = null;
 
         try {
-            if (subscription) {
-                let urlForFirstPayment =
-                    await SubscribeOnProject.restoreSubscription(
-                        subscription, project, amount,
-                        successRedirectURL, failureRedirectURL
-                    );
-
-            } else {
-                urlForFirstPayment = await SubscribeOnProject.subscribe(
-                    project, amount, successRedirectURL, failureRedirectURL
-                );
-            }
+            let subscription = await SubscribeOnProject.subscribeOrRestoreSubscription(
+                userId, projectId, amount, successRedirectURL, failureRedirectURL
+            );
+            urlForPaymentInAcquiring = subscription.urlForPaymentInAcquiring;
         } catch (error) {
             if (error instanceof CreationOfAcquiringOrderFailedError) {
                 throw new errors.HttpError('Не удалось создать первый платёж', 400);
@@ -42,9 +33,9 @@ class SubscriptionController extends Controller {
             }
         }
 
-        if (urlForFirstPayment) {
+        if (urlForPaymentInAcquiring) {
             return {
-                formUrl: urlForFirstPayment
+                formUrl: urlForPaymentInAcquiring
             }
         }
     }

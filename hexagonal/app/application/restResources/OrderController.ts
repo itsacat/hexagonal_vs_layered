@@ -13,7 +13,7 @@ class OrderController extends Controller {
 
         if (order instanceof FirstOrder) {
             try {
-                await(PaymentOfFirstOrder.creationAcquiringOrderCallback(order));
+                await(SubscribeOnProject.creationAcquiringOrderCallback(order));
             } catch(error) {
                 if (error instanceof OrderIsNotAvailableForPaymentError) {
                     // бросит ошибку

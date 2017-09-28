@@ -3,11 +3,9 @@ class FirstOrder {
     public async makePaymentInAcquiring(
             successRedirectURL, failureRedirectURL
         ) {
-        let urlForPaymentOfAcquiringOrder = await this.createAcquiringOrder_(
+        await this.createAcquiringOrder_(
             successRedirectURL, failureRedirectURL
         );
-
-        return urlForPaymentOfAcquiringOrder;
     }
 
 
@@ -36,8 +34,7 @@ class FirstOrder {
         this.acquiringOrder.id = acquiringResponse.orderId;
         this.setStatus(FirstOrderStatus.WAITING_FOR_ACQUIRING_ORDER_DATA);
 
-        let urlForPaymentOfAcquiringOrder = acquiringResponse.formUrl;
-        return urlForPaymentOfAcquiringOrder;
+        this.urlForPaymentInAcquiring = acquiringResponse.formUrl;
     }
 
 
